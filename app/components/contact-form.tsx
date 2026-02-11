@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import {
   Divider,
   FormControl,
@@ -12,6 +13,7 @@ import { useForm } from 'react-hook-form';
 import { ContactSchema } from '../utils/schema';
 import { yupResolver } from '@hookform/resolvers/yup';
 import services from '../utils/services.json';
+import { toast } from 'react-toastify';
 
 type FormValues = {
   firstName: string;
@@ -19,12 +21,16 @@ type FormValues = {
   email: string;
   phone?: string;
   service: string;
+  address?: string;
 };
 
 export const ContactForm = () => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const {
     handleSubmit,
     register,
+    reset,
     formState: { errors },
   } = useForm<FormValues>({
     resolver: yupResolver(ContactSchema),
@@ -34,11 +40,31 @@ export const ContactForm = () => {
       email: '',
       phone: '',
       service: '',
+      address: '',
     },
   });
 
-  function onSubmit(values: FormValues) {
-    console.log(values);
+  async function onSubmit(values: FormValues) {
+    setIsSubmitting(true);
+    try {
+      const res = await fetch('/api/enquiry', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(values),
+      });
+      const data = await res.json();
+
+      if (data.ok) {
+        toast.success('Your enquiry has been sent successfully!');
+        reset();
+      } else {
+        toast.error(data.error || 'Something went wrong. Please try again.');
+      }
+    } catch {
+      toast.error('Failed to send enquiry. Please try again later.');
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
@@ -125,7 +151,13 @@ export const ContactForm = () => {
             </FormErrorMessage>
           </FormControl>
         </div>
-        <button className='btn btn-secondary w-full mt-8'>Submit</button>
+        <button
+          className='btn btn-secondary w-full mt-8'
+          type='submit'
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? 'Sending...' : 'Submit'}
+        </button>
       </form>
     </div>
   );
