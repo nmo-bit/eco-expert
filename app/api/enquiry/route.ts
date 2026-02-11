@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
     const { error } = await resend.emails.send({
       from: 'Eco Expert Services <notifications@ecoexpertservices.co.uk>',
       to: 'ecoexpertservices@gmail.com',
-      replyTo: email,
+      reply_to: email,
       subject: `New enquiry - ${service}`,
       text: [
         `New Enquiry Received`,
