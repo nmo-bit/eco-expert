@@ -26,6 +26,7 @@ type FormValues = {
 
 export const ContactForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSent, setIsSent] = useState(false);
 
   const {
     handleSubmit,
@@ -44,6 +45,11 @@ export const ContactForm = () => {
     },
   });
 
+  const handleSendAnother = () => {
+    setIsSent(false);
+    reset();
+  };
+  
   async function onSubmit(values: FormValues) {
     setIsSubmitting(true);
     try {
@@ -55,7 +61,7 @@ export const ContactForm = () => {
       const data = await res.json();
 
       if (data.ok) {
-        toast.success('Your enquiry has been sent successfully!');
+        setIsSent(true);
         reset();
       } else {
         toast.error(data.error || 'Something went wrong. Please try again.');
@@ -67,6 +73,34 @@ export const ContactForm = () => {
     }
   }
 
+  if (isSent) {
+  return (
+    <div className='bg-white rounded-lg p-6 h-fit text-foreground text-center'>
+      <h2 className='text-xl font-semibold'>Contact Information</h2>
+      <Divider my={6} />
+
+      <div className='mt-10 flex flex-col items-center'>
+        <div className='h-14 w-14 rounded-full bg-gray-100 flex items-center justify-center'>
+          <span className='text-2xl'>✈️</span>
+        </div>
+
+        <h3 className='mt-6 text-3xl font-semibold'>Thank You!</h3>
+        <p className='mt-3 text-gray-600'>
+          We&apos;ve received your message and will be in touch soon.
+        </p>
+
+        <button
+          type='button'
+          className='btn btn-outline mt-8'
+          onClick={handleSendAnother}
+        >
+          Send Another Message
+        </button>
+      </div>
+    </div>
+  );
+}
+  
   return (
     <div className='bg-white rounded-lg p-6 h-fit text-foreground'>
       <h2 className='text-xl font-semibold'>Contact Information</h2>
