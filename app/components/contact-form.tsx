@@ -79,13 +79,9 @@ export const ContactForm = () => {
       <h2 className='text-xl font-semibold'>Contact Information</h2>
       <Divider my={6} />
 
-      <div className='mt-10 flex flex-col items-center'>
-        <div className='h-14 w-14 rounded-full bg-gray-100 flex items-center justify-center'>
-          <span className='text-2xl'>✈️</span>
-        </div>
-
+      <div className='mt-6 flex flex-col items-center'>
         <h3 className='mt-6 text-3xl font-semibold'>Thank You!</h3>
-        <p className='mt-3 text-gray-600'>
+        <p className='mt-3 text-gray-600 max-w-md'>
           We&apos;ve received your message and will be in touch soon.
         </p>
 
