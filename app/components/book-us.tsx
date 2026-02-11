@@ -27,6 +27,7 @@ type FormValues = {
 
 const BookUs = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSent, setIsSent] = useState(false);
 
   const {
     handleSubmit,
@@ -45,6 +46,11 @@ const BookUs = () => {
     },
   });
 
+ const handleSendAnother = () => {
+  setIsSent(false);
+  reset();
+};
+
   async function onSubmit(values: FormValues) {
   setIsSubmitting(true);
 
@@ -58,7 +64,7 @@ const BookUs = () => {
     const data = await res.json();
 
     if (data.ok) {
-      toast.success('Your booking request has been sent successfully!');
+      setIsSent(true);
       reset();
     } else {
       toast.error(data.error || 'Something went wrong. Please try again.');
@@ -70,6 +76,25 @@ const BookUs = () => {
   }
 }
 
+  if (isSent) {
+    return (
+      <div className='py-8 text-center'>
+        <h3 className='text-3xl font-semibold'>Thank You!</h3>
+        <p className='mt-3 text-gray-600 max-w-md mx-auto'>
+          Your booking request has been received. Our team will contact you shortly.
+        </p>
+
+        <button
+          type='button'
+          className='btn btn-outline mt-8'
+          onClick={handleSendAnother}
+        >
+          Make Another Booking
+        </button>
+      </div>
+    );
+  }
+  
   return (
     <div className='py-5'>
       <h2 className='text-xl font-semibold'>We are ready to serve you</h2>
