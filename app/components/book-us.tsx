@@ -45,9 +45,30 @@ const BookUs = () => {
     },
   });
 
-  function onSubmit(values: FormValues) {
-    console.log(values);
+  async function onSubmit(values: FormValues) {
+  setIsSubmitting(true);
+
+  try {
+    const res = await fetch('/api/enquiry', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(values),
+    });
+
+    const data = await res.json();
+
+    if (data.ok) {
+      toast.success('Your booking request has been sent successfully!');
+      reset();
+    } else {
+      toast.error(data.error || 'Something went wrong. Please try again.');
+    }
+  } catch {
+    toast.error('Failed to send booking request. Please try again later.');
+  } finally {
+    setIsSubmitting(false);
   }
+}
 
   return (
     <div className='py-5'>
@@ -151,7 +172,13 @@ const BookUs = () => {
             </FormErrorMessage>
           </FormControl>
         </div>
-        <button className='btn btn-secondary w-full mt-8'>Submit</button>
+        <button
+  className='btn btn-secondary w-full mt-8'
+  type='submit'
+  disabled={isSubmitting}
+>
+  {isSubmitting ? 'Sending...' : 'Submit'}
+</button>
       </form>
     </div>
   );
