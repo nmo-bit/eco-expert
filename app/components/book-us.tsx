@@ -26,9 +26,12 @@ type FormValues = {
 };
 
 const BookUs = () => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const {
     handleSubmit,
     register,
+    reset,
     formState: { errors },
   } = useForm<FormValues>({
     resolver: yupResolver(BookUsSchema),
