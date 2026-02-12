@@ -48,67 +48,78 @@ const NavBar = () => {
   };
 
   return (
-    <nav className='bg-white h-16 flex items-center'>
-      <div className='container flex justify-between items-center'>
-        <Link href='/'>
+  <nav className='bg-white h-20 flex items-center'>
+    <div className='container flex justify-between items-center'>
+      <Link href='/' className='block'>
+        <div className='relative h-10 w-[160px] md:h-14 md:w-[220px]'>
           <Image
-            src={'/logo/ecoexpert-black-mixed.png'}
+            src='/logo/ecoexpert-black-mixed.png'
             alt='ecoexpert cleaning solutions services limited'
-            width={150}
-            height={50}
+            fill
+            className='object-contain'
+            priority
           />
-        </Link>
-        <div className='hidden md:flex items-center justify-between w-2/3'>
-          <ul className='flex gap-10'>
+        </div>
+      </Link>
+
+      <div className='hidden md:flex items-center justify-between w-2/3'>
+        <ul className='flex gap-10'>
+          {links.map((link) => (
+            <li
+              key={link.id}
+              className={`hover:text-lemon ${
+                isActive(link.url) ? 'underline text-semibold' : ''
+              }`}
+            >
+              <Link href={link.url}>{link.title}</Link>
+            </li>
+          ))}
+        </ul>
+        <BookUsButton variant='outline' />
+      </div>
+
+      <button ref={btnRef} onClick={onOpen} className='md:hidden'>
+        <HamburgerIcon fontSize={20} />
+      </button>
+
+      <Drawer isOpen={isOpen} onClose={onClose} placement='right'>
+        <DrawerOverlay />
+        <DrawerContent className='px-8 pt-4'>
+          <div className='flex items-center mb-10'>
+            <div className='relative h-10 w-[160px]'>
+              <Image
+                src='/logo/ecoexpert-black-mixed.png'
+                alt='ecoexpert cleaning solutions services limited'
+                fill
+                className='object-contain'
+                priority
+              />
+            </div>
+            <DrawerCloseButton />
+          </div>
+
+          <ul className='flex flex-col gap-10 mb-16 text-lg'>
             {links.map((link) => (
               <li
                 key={link.id}
-                className={`hover:text-lemon ${
-                  isActive(link.url) ? 'underline text-semibold' : ''
-                }`}
+                className={
+                  isActive(link.url)
+                    ? 'text-lemon underline text-semibold'
+                    : ''
+                }
               >
-                <Link href={link.url}>{link.title}</Link>
+                <Link href={link.url} onClick={onClose}>
+                  {link.title}
+                </Link>
               </li>
             ))}
           </ul>
+
           <BookUsButton variant='outline' />
-        </div>
-        <button ref={btnRef} onClick={onOpen} className='md:hidden'>
-          <HamburgerIcon fontSize={20} />
-        </button>
-        <Drawer isOpen={isOpen} onClose={onClose} placement='right'>
-          <DrawerOverlay />
-          <DrawerContent className='px-8 pt-4'>
-            <div className='flex mb-10'>
-              <Image
-                src={'/logo/ecoexpert-black-mixed.png'}
-                alt='ecoexpert cleaning solutions services limited'
-                width={150}
-                height={50}
-              />
-              <DrawerCloseButton />
-            </div>
-            <ul className='flex flex-col gap-10 mb-16 text-lg'>
-              {links.map((link) => (
-                <li
-                  key={link.id}
-                  className={
-                    isActive(link.url)
-                      ? 'text-lemon underline text-semibold'
-                      : ''
-                  }
-                >
-                  <Link href={link.url} onClick={onClose}>
-                    {link.title}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-            <BookUsButton variant='outline' />
-          </DrawerContent>
-        </Drawer>
-      </div>
-    </nav>
+        </DrawerContent>
+      </Drawer>
+    </div>
+  </nav>
   );
 };
 
