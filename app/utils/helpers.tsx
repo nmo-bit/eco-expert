@@ -9,12 +9,12 @@ import {
 export const socialLinks = [
   {
     name: 'Instagram',
-    url: 'https://www.instagram.com/ecoex_pert',
+    url: 'https://www.instagram.com/ecoexpt.services?igsh=bzF6bjR4OGIwYmwx&utm_source=qr',
     icon: <FaInstagram />,
   },
   {
     name: 'TikTok',
-    url: 'https://www.tiktok.com/@eco.expert.ltd',
+    url: 'https://www.tiktok.com/@eco.expert.ltd?_r=1&_t=ZN-93tol649Mmc',
     icon: <FaTiktok />,
   },
   {
